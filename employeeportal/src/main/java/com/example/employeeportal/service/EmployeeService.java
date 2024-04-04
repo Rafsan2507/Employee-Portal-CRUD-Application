@@ -6,6 +6,7 @@ import com.example.employeeportal.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,10 +23,6 @@ public class EmployeeService {
         empEntity.setPhone(empDto.getPhone());
 
         empRepository.save(empEntity);
-
-        empDto.setName(empEntity.getName());
-        empDto.setDesignation(empEntity.getDesignation());
-        empDto.setPhone(empEntity.getPhone());
         return empDto;
     }
 
@@ -56,10 +53,6 @@ public class EmployeeService {
         employeeEntity.setPhone(employeeDto.getPhone());
 
         empRepository.save(employeeEntity);
-
-        employeeDto.setName(employeeEntity.getName());
-        employeeDto.setDesignation(employeeEntity.getDesignation());
-        employeeDto.setPhone(employeeEntity.getPhone());
         return employeeDto;
     }
 
@@ -71,8 +64,18 @@ public class EmployeeService {
         return "Success";
     }
 
-    public List<EmployeeEntity> getAllEmployee(){
+    public List<EmployeeDto> getAllEmployee(){
+        List<EmployeeEntity> all = empRepository.findAll();
+        List<EmployeeDto> empdto = new ArrayList<>();
 
-        return empRepository.findAll();
+        for(EmployeeEntity employeeEntity : all){
+            EmployeeDto employeeDto = new EmployeeDto();
+            employeeDto.setName(employeeEntity.getName());
+            employeeDto.setDesignation(employeeEntity.getDesignation());
+            employeeDto.setPhone(employeeEntity.getPhone());
+
+            empdto.add(employeeDto);
+        }
+        return empdto;
     }
 }
